@@ -5104,15 +5104,48 @@ Method.prototype.request = function () {
 module.exports = Method;
 
 },{"../utils/utils":20,"./errors":26}],37:[function(require,module,exports){
-"use strict";
+'use strict';
 
-var Atn = function Atn(){
-    console.log('ATNIO');
+var formatters = require('../formatters');
+var Method = require('../method');
+
+var Atn = function Atn(web3) {
+    this._requestManager = web3._requestManager;
+
+    var self = this;
+
+    methods().forEach(function(method) {
+        method.attachToObject(self);
+        method.setRequestManager(self._requestManager);
+    });
+    
+}
+
+var methods = function () {
+    var registerDbot = new Method({
+        name: 'registerDbot',
+        call: 'atn_registerDbot',
+        params: 2,
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatter]
+    });
+
+    var countDbot = new Method({
+        name: 'countDbot',
+        call: 'atn_countDbot',
+        params: 2,
+        inputFormatter: [formatters.inputCallFormatter, formatters.inputDefaultBlockNumberFormatter]
+    });
+
+    return [
+        registerDbot,
+        countDbot
+    ];
 };
+
 
 module.exports = Atn;
 
-},{}],38:[function(require,module,exports){
+},{"../formatters":30,"../method":36}],38:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
