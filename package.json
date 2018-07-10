@@ -1,39 +1,28 @@
 {
-  "name": "ethereum-console",
-  "version": "1.0.4",
-  "description": "Commandline console for Ethereum nodes",
+  "name": "atn-console",
+  "version": "0.0.1",
+  "description": "Commandline console for ATN nodes",
   "main": "main.js",
   "bin": {
-    "ethconsole": "./main.js"
+    "atnconsole": "./main.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/ethereum/ethereum-console.git"
+    "url": ""
   },
   "keywords": [
     "console",
     "ethereum",
-    "web3"
+    "web3",
+    "atn"
   ],
-  "author": "Ethereum Foundation",
-  "authors": [
-    {
-      "name": "Christian Reitwiessner",
-      "email": "c@ethereum.org",
-      "url": "https://github.com/chriseth"
-    },
-    {
-      "name": "Fabian Vogelsteller",
-      "email": "fabian@ethereum.org",
-      "homepage": "http://frozeman.de"
-    }
-  ],
+  "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ethereum/ethereum-console/issues"
+    "url": ""
   },
   "dependencies": {
     "es6-shim": "^0.35.1",

@@ -43,7 +43,7 @@ process.on('uncaughtException', function(err) {
 	console.error("Uncaught exception: " + err);
 });
 
-console.log("ETHEREUM CONSOLE");
+console.log("ATN CONSOLE");
 console.log("Connecting to node at " + providerPath);
 
 if (wsPath || httpPath) {
@@ -145,7 +145,7 @@ function executeScript(jsScript) {
 
 function help(){
 	console.log(
-		"web3.js based console that connects to an Ethereum node via IPC/WS/HTTP.\n" +
+		"web3.js based console that connects to an ATN node via IPC/WS/HTTP.\n" +
 		"Defaults to IPC path: " + ipcpath() + "\n\n" +
 		"Usage: ethconsole <connection> <JavaScript file>\n\n" +
 		"Arguments:\n" +
