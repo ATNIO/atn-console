@@ -1,149 +1,64 @@
-# Migration 0.13.0 -> 0.14.0
+# ethereum-console
 
-web3.js version 0.14.0 supports [multiple instances of web3](https://github.com/ethereum/web3.js/issues/297) object.
-To migrate to this version, please follow the guide:
+Commandline console for Ethereum nodes.
 
-```diff
--var web3 = require('web3');
-+var Web3 = require('web3');
-+var web3 = new Web3();
-```
+`ethconsole` connects to a running Ethereum node via IPC/WS/HTTP
+and provides an interactive javascript console containing the `web3` (1.x) object with admin extensions.
 
+Note that the admin/debug additions are not yet official and may change over time.
 
-# Ethereum JavaScript API
+Run `$ ethconsole --help` for help.
 
-[![Join the chat at https://gitter.im/ethereum/web3.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ethereum/web3.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+## Installation / Usage
 
-This is the Ethereum compatible [JavaScript API](https://github.com/ethereum/wiki/wiki/JavaScript-API)
-which implements the [Generic JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) spec. It's available on npm as a node module, for bower and component as an embeddable js and as a meteor.js package.
+    $ npm install -g ethereum-console
+    ...
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url] [![dev dependency status][dep-dev-image]][dep-dev-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Stories in Ready][waffle-image]][waffle-url]
+    $ ethconsole
+    ETHEREUM CONSOLE
+    Connecting to node at /Users/xyz/Library/Ethereum/geth.ipc
+    ... Connection successful!
 
-<!-- [![browser support](https://ci.testling.com/ethereum/ethereum.js.png)](https://ci.testling.com/ethereum/ethereum.js) -->
+    Use the "web3" object to interact.
+    You can find the documentation here: http://web3js.readthedocs.io/en/1.0/
 
-You need to run a local Ethereum node to use this library.
+    ΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞ
+    Network: MAIN
+    Current block: 5285047 [0x8a22bd], March 19th 2018, 20:46:37
+    ΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞΞ
 
-[Documentation](https://github.com/ethereum/wiki/wiki/JavaScript-API)
+    > web3.admin.nodeInfo()
+    ...
 
-## Installation
+### CPP Ethereum Test Interface
 
-### Node.js
+`ethconsole` provides access to the cpp-ethereum test interface, which can
+be used to test smart contracts that depend on timing and blocks being
+mined.
 
-```bash
-npm install web3
-```
+    # Install the development version of cpp-ethereum on Ubuntu:
+    # sudo add-apt-repository -y ppa:ethereum/ethereum-qt
+    # sudo add-apt-repository -y ppa:ethereum/ethereum
+    # sudo add-apt-repository -y ppa:ethereum/ethereum-dev
+    # sudo apt-get -y update
+    # sudo apt-get -y install eth
+    #
+    # Start eth in test-mode using data directory /tmp/test 
+    $ eth --test -d /tmp/test &
+    # Wait for it to start up...
+    # Run the example:
+    $ ethconsole /tmp/test/geth.ipc cppTestExample.js
 
-### Yarn
+These testing interfaces exist in cpp-ethereum:
 
-```bash
-yarn add web3
-```
-
-### Meteor.js
-
-```bash
-meteor add ethereum:web3
-```
-
-### As Browser module
-Bower
-
-```bash
-bower install web3
-```
-
-Component
-
-```bash
-component install ethereum/web3.js
-```
-
-* Include `web3.min.js` in your html file. (not required for the meteor package)
-
-## Usage
-Use the `web3` object directly from global namespace:
-
-```js
-console.log(web3); // {eth: .., shh: ...} // it's here!
-```
-
-Set a provider (HttpProvider)
-
-```js
-if (typeof web3 !== 'undefined') {
-  web3 = new Web3(web3.currentProvider);
-} else {
-  // set the provider you want from Web3.providers
-  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-}
-```
-
-Set a provider (HttpProvider using [HTTP Basic Authentication](https://en.wikipedia.org/wiki/Basic_access_authentication))
-
-```js
-web3.setProvider(new web3.providers.HttpProvider('http://host.url', 0, BasicAuthUsername, BasicAuthPassword));
-```
-
-There you go, now you can use it:
-
-```js
-var coinbase = web3.eth.coinbase;
-var balance = web3.eth.getBalance(coinbase);
-```
-
-You can find more examples in [`example`](https://github.com/ethereum/web3.js/tree/master/example) directory.
-
-
-## Contribute!
-
-### Requirements
-
-* Node.js
-* npm
-
-```bash
-sudo apt-get update
-sudo apt-get install nodejs
-sudo apt-get install npm
-sudo apt-get install nodejs-legacy
-```
-
-### Building (gulp)
-
-```bash
-npm run-script build
-```
-
-
-### Testing (mocha)
-
-```bash
-npm test
-```
-
-### Community
- - [Gitter](https://gitter.im/ethereum/web3.js?source=orgpage)
- - [Forum](https://forum.ethereum.org/categories/ethereum-js)
-
-
-### Other implementations
- - Python [Web3.py](https://github.com/ethereum/web3.py)
- - Haskell [hs-web3](https://github.com/airalab/hs-web3)
- - Java [web3j](https://github.com/web3j/web3j)
- - Scala [web3j-scala](https://github.com/mslinn/web3j-scala)
- - Purescript [purescript-web3](https://github.com/f-o-a-m/purescript-web3)
- - PHP [web3.php](https://github.com/sc0Vu/web3.php)
-
-
-[npm-image]: https://badge.fury.io/js/web3.svg
-[npm-url]: https://npmjs.org/package/web3
-[travis-image]: https://travis-ci.org/ethereum/web3.js.svg
-[travis-url]: https://travis-ci.org/ethereum/web3.js
-[dep-image]: https://david-dm.org/ethereum/web3.js.svg
-[dep-url]: https://david-dm.org/ethereum/web3.js
-[dep-dev-image]: https://david-dm.org/ethereum/web3.js/dev-status.svg
-[dep-dev-url]: https://david-dm.org/ethereum/web3.js#info=devDependencies
-[coveralls-image]: https://coveralls.io/repos/ethereum/web3.js/badge.svg?branch=master
-[coveralls-url]: https://coveralls.io/r/ethereum/web3.js?branch=master
-[waffle-image]: https://badge.waffle.io/ethereum/web3.js.svg?label=ready&title=Ready
-[waffle-url]: https://waffle.io/ethereum/web3.js
+    web3.test.setChainParams({}, cb(err, bool))
+        set chain parameters using the json chain description
+        you can use the function chainParams() from the cppTestExample.js to create such a description
+    web3.test.mineBlocks(x, cb(err, bool))
+        start mining and stop again after exactly x blocks
+    web3.test.modifyTimestamp(x, cb(err, bool))
+        set the timestamp of the current block to x
+    web3.test.rewindToBlock(x, cb(err, bool))
+        rewind the blockchain to block number x
+    web3.test.addBlock(x, cb(err, bool)
+        inject an RLP-encoded block
