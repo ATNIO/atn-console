@@ -3945,6 +3945,16 @@ var outputSyncingFormatter = function(result) {
     return result;
 };
 
+var inputDbotFormatter = function(options) {
+    ['name', 'domain', 'action', 'price', 'uri'].filter(function (key) {
+        return options[key] !== undefined;
+    }).forEach(function(key){
+        options[key] = utils.fromAscii (options[key]);
+    });
+
+    return options;
+}
+
 module.exports = {
     inputDefaultBlockNumberFormatter: inputDefaultBlockNumberFormatter,
     inputBlockNumberFormatter: inputBlockNumberFormatter,
@@ -5108,6 +5118,7 @@ module.exports = Method;
 
 var formatters = require('../formatters');
 var Method = require('../method');
+var utils = require('../../utils/utils');
 
 var Atn = function Atn(web3) {
     this._requestManager = web3._requestManager;
@@ -5129,23 +5140,71 @@ var methods = function () {
         inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatter]
     });
 
-    var countDbot = new Method({
-        name: 'countDbot',
-        call: 'atn_countDbot',
+    var createDbot = new Method({
+        name: 'createDbot',
+        call: 'atn_createDbot',
         params: 2,
-        inputFormatter: [formatters.inputCallFormatter, formatters.inputDefaultBlockNumberFormatter]
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputDbotFormatter]
+    });
+
+     var getDbotByIndex = new Method({
+        name: 'getDbotByIndex',
+        call: 'atn_getDbotByIndex',
+        params: 3,
+        inputFormatter: [formatters.inputCallFormatter, utils.toHex, formatters.inputBlockNumberFormatter]
+    });
+
+    var changeName = new Method({
+        name: 'changeName',
+        call: 'atn_changeName',
+        params: 3,
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatter, utils.toHex]
+    });
+
+    var changeDomain = new Method({
+        name: 'changeDomain',
+        call: 'atn_changeDomain',
+        params: 3,
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatter, utils.toHex]
+    });
+
+    var addEndPoint = new Method({
+        name: 'addEndPoint',
+        call: 'atn_addEndPoint',
+        params: 5,
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatter, null, null, null]
+    });
+  
+    var updateEndPoint = new Method({
+        name: 'updateEndPoint',
+        call: 'atn_updateEndPoint',
+        params: 5,
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatteri, null, null, null]
+    });
+
+    var deleteEndPoint = new Method({
+        name: 'deleteEndPoint',
+        call: 'atn_deleteEndPoint',
+        params: 4,
+        inputFormatter: [formatters.inputTransactionFormatter, formatters.inputAddressFormatter, null, null]
     });
 
     return [
         registerDbot,
-        countDbot
+        createDbot,
+        getDbotByIndex,  
+        changeName,
+        changeDomain,
+        addEndPoint,
+        updateEndPoint,
+        deleteEndPoint
     ];
 };
 
 
 module.exports = Atn;
 
-},{"../formatters":30,"../method":36}],38:[function(require,module,exports){
+},{"../../utils/utils":20,"../formatters":30,"../method":36}],38:[function(require,module,exports){
 /*
     This file is part of web3.js.
 
